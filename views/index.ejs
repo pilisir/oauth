@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hello</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <script src="/javascripts/fb.js"></script>
+    <script>
+      function fbInitOAuth() {
+        FB.getLoginStatus(function(response) {
+          if (response.status === 'connected') {
+            console.log('Logged in.');
+            initProfile();
+          } else {
+            var infoMsg = document.getElementById('infoMsg')
+            infoMsg.innerHTML = '尚未登入，轉往登入頁';
+            infoMsg.className += ' alert alert-danger';
+            setTimeout(function() {
+              location.href = '/oauth';
+            }, 2000);
+          }
+        });
+      }
+
+      function initProfile() {
+        FB.api("/me/picture?width=180&height=180",  function(response) {
+            document.getElementById('picture').innerHTML = '<img src="' + response.data.url + '">';
+        }); 
+        FB.api('/me', {fields: 'name, email'}, function(res) {
+          console.log('Successful login for: ' + res.picture);
+          var infoMsg = document.getElementById('infoMsg');
+          infoMsg.innerHTML = '歡迎光臨!';
+          infoMsg.className += ' alert alert-success';
+          document.getElementById('username').innerHTML = '哈囉, ' + res.name + '~';
+
+          var email = ((res.email).substr(0, 3));
+          document.getElementById('email').innerHTML = '您的 email 是： ' + email + '&lt;遮蔽保護&gt;';
+        });
+      }
+    </script>
+  </head>
+  <body class="text-center">
+    <div class="row">
+      <div class="col-md-12">
+         <p class="form-control-static">
+          <h1>個人資料</h1>
+        </p>
+      </div>
+      <div class="col-md-12">
+           <p id="infoMsg" class="form-control-static">
+          </p>
+      </div>
+      <div class="col-md-12">
+           <p class="form-control-static">
+          <sapn id="picture"></sapn>
+          </p>
+      </div>
+      <div class="col-md-12">
+          <sapn id="username"></sapn>
+      </div>
+      <div class="col-md-12">
+          <sapn id="email"></sapn>
+      </div>
+    </div>
+  </body>
+</html>

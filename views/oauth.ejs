@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Oauth</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' />
+    <script src="/javascripts/fb.js"></script>
+    <script>
+      function fbInitOAuth() {
+        FB.getLoginStatus(function(response) {
+            if (response.status === 'connected') {
+              console.log('Logged in.');
+              location.href = "/";
+            }
+        });
+      }
+
+      function loginFB() {
+        FB.login(function(){
+          location.href = "/";
+        }, {scope: 'public_profile,email'});
+      }
+      
+    </script>
+  </head>
+  <body class="text-center">
+    <h1>歡迎，請登入</h1>
+    <button type="button" class="btn btn-primary" onclick="loginFB()"><i class="fa fa-facebook-square"></i><span> </span>使用 Facebook 登入</button>
+  </body>
+</html>
